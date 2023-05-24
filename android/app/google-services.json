@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "397543740492",
+    "project_id": "wallyhub-36df2",
+    "storage_bucket": "wallyhub-36df2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397543740492:android:e6f38ff2e81fc1f16f10e9",
+        "android_client_info": {
+          "package_name": "com.example.wallyhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397543740492-pqshh4ids1ipvpvshs3koa9mdjfkopsl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7GwVkKoTLu0xiUyye6AdJuMSlJdru5yc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397543740492-n4ne4hvmjlc55i2qddvrkptfhav0url9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
