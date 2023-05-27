@@ -43,70 +43,72 @@ class _AccountPageState extends State<AccountPage> {
     return SingleChildScrollView(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: FadeInImage(
-                width: 200,
-                height: 200,
-                image: NetworkImage(_user.photoURL!),
-                placeholder: AssetImage("assets/placeholder.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text("${_user.displayName}"),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _auth.signOut();
-              },
-              child: Text("Logout"),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: _user != null
+            ? Column(
                 children: [
-                  Text("My Wallpaper"),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add),
-                  )
-                ],
-              ),
-            ),
-            StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-              itemCount: images.length,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              itemBuilder: (ctx, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image(
-                    image: NetworkImage(images[index]),
+                  SizedBox(
+                    height: 20,
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: FadeInImage(
+                      width: 200,
+                      height: 200,
+                      image: NetworkImage(_user.photoURL!),
+                      placeholder: AssetImage("assets/placeholder.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text("${_user.displayName}"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _auth.signOut();
+                    },
+                    child: Text("Logout"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("My Wallpaper"),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.add),
+                        )
+                      ],
+                    ),
+                  ),
+                  StaggeredGridView.countBuilder(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                    itemCount: images.length,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    itemBuilder: (ctx, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image(
+                          image: NetworkImage(images[index]),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
+            : LinearProgressIndicator(),
       ),
     );
   }
