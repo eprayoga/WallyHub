@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wallyhub/pages/add_wallpaper_screen.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -82,7 +83,14 @@ class _AccountPageState extends State<AccountPage> {
                       children: [
                         Text("My Wallpaper"),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddWallpaperScreen(),
+                                  fullscreenDialog: true,
+                                ));
+                          },
                           icon: Icon(Icons.add),
                         )
                       ],
