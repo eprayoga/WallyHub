@@ -29,7 +29,8 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
   bool _isCompleteUploading = false;
 
   void _loadImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 30);
 
     if (image != null) {
       final File imageFile = File(image.path);
@@ -55,9 +56,8 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
   void _uploadPhoto() async {
     if (_image != null) {
       String fileName = path.basename(_image!.path);
-      print('Filename : ${fileName}');
 
-      User user = await _auth.currentUser!;
+      User user = _auth.currentUser!;
       String uid = user.uid;
 
       UploadTask task = _storage
@@ -67,21 +67,28 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
           .child(fileName)
           .putFile(_image!);
 
-      task.snapshotEvents.listen((e) {
+      task.snapshotEvents.listen((e) async {
         if (e.state == TaskState.running) {
           setState(() {
             _isUploading = true;
           });
         }
+
         if (e.state == TaskState.success) {
           setState(() {
             _isCompleteUploading = true;
             _isUploading = false;
           });
 
-          e.ref.getDownloadURL().then((url) {
-            Navigator.of(context).pop;
+          String url = await e.ref.getDownloadURL();
+
+          _db.collection("photos").add({
+            "url": url,
+            "date": DateTime.now(),
+            "uploaded_by": uid,
+            "tags": labelInString,
           });
+          Navigator.of(context).pop();
         }
       });
     } else {
