@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wallyhub/config/config.dart';
 import 'package:wallyhub/pages/wallpaper_view_screen.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -11,15 +15,17 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  var images = [
-    'https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/7862485/pexels-photo-7862485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/9100862/pexels-photo-9100862.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/12672180/pexels-photo-12672180.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/12672185/pexels-photo-12672185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
-  ];
+  // var images = [
+  //   'https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/7862485/pexels-photo-7862485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/9100862/pexels-photo-9100862.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/12672180/pexels-photo-12672180.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/12672185/pexels-photo-12672185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  //   'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
+  // ];
+
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -43,38 +49,63 @@ class _ExplorePageState extends State<ExplorePage> {
                 ),
               ),
             ),
-            StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-              itemCount: images.length,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              itemBuilder: (ctx, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                WallpaperViewPage(image: images[index])));
-                  },
-                  child: Hero(
-                    tag: images[index],
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        placeholder: (ctx, url) => Image(
-                          image: AssetImage("assets/placeholder.jpg"),
+            StreamBuilder(
+              stream: _db
+                  .collection("photos")
+                  .orderBy("date", descending: true)
+                  .snapshots(),
+              builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  return StaggeredGridView.countBuilder(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                    itemCount: snapshot.data?.docs.length,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    itemBuilder: (ctx, index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WallpaperViewPage(
+                                image: snapshot.data?.docs[index].get("url"),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: snapshot.data?.docs[index].get("url"),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              placeholder: (ctx, url) => Image(
+                                image: AssetImage("assets/placeholder.jpg"),
+                              ),
+                              imageUrl: snapshot.data?.docs[index].get("url"),
+                            ),
+                          ),
                         ),
-                        imageUrl: images[index],
-                      ),
+                      );
+                    },
+                  );
+                }
+                return Container(
+                  height: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: SpinKitChasingDots(
+                      color: primaryColor,
+                      size: 50,
                     ),
                   ),
                 );
               },
+            ),
+            SizedBox(
+              height: 80,
             ),
           ],
         ),
