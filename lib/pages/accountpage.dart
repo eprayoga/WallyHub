@@ -122,29 +122,72 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                 );
                               },
-                              child: Hero(
-                                tag: snapshot.data?.docs[index].get("url"),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    placeholder: (ctx, url) => Image(
-                                      image:
-                                          AssetImage("assets/placeholder.jpg"),
+                              child: Stack(
+                                children: [
+                                  Hero(
+                                    tag: snapshot.data?.docs[index].get("url"),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        placeholder: (ctx, url) => Image(
+                                          image: AssetImage(
+                                              "assets/placeholder.jpg"),
+                                        ),
+                                        imageUrl: snapshot.data?.docs[index]
+                                            .get("url"),
+                                      ),
                                     ),
-                                    imageUrl:
-                                        snapshot.data?.docs[index].get("url"),
                                   ),
-                                ),
+                                  IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18),
+                                              ),
+                                              title: Text("Confirmation"),
+                                              content: Text(
+                                                  "Are you sure, you are deleting photos"),
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text("Cancel"),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    _db
+                                                        .collection("photos")
+                                                        .doc(snapshot.data
+                                                            ?.docs[index].id)
+                                                        .delete();
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text("Delete"),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           },
                         );
                       }
-                      return Text("data : ${snapshot.data}");
-                      // return SpinKitChasingDots(
-                      //   color: primaryColor,
-                      //   size: 50,
-                      // );
+                      return SpinKitChasingDots(
+                        color: primaryColor,
+                        size: 50,
+                      );
                     },
                   ),
                   SizedBox(
