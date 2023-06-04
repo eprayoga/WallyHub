@@ -72,7 +72,7 @@ class _ExplorePageState extends State<ExplorePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => WallpaperViewPage(
-                                image: snapshot.data?.docs[index].get("url"),
+                                data: snapshot.data!.docs[index],
                               ),
                             ),
                           );
