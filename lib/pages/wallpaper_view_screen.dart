@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:wallyhub/config/config.dart';
+import 'package:wallyhub/services/firebase_auth_service.dart';
 
 class WallpaperViewPage extends StatefulWidget {
   const WallpaperViewPage({super.key, required this.data});
@@ -14,6 +16,9 @@ class WallpaperViewPage extends StatefulWidget {
 }
 
 class _WallpaperViewPageState extends State<WallpaperViewPage> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     List<dynamic> tags = widget.data.get("tags").toList();
@@ -60,7 +65,7 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                     label: Text("Share"),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: _addToFavorite,
                     icon: Icon(Icons.favorite_border),
                     label: Text("Favorite"),
                   ),
@@ -83,6 +88,24 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
           showPageTitle: true,
         ),
       );
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _addToFavorite() async {
+    User user = await _auth.currentUser!;
+
+    String uid = user.uid;
+
+    final Map<String, dynamic> data =
+        Map<String, dynamic>.from(widget.data.data() as Map);
+
+    _db
+        .collection("users")
+        .doc(uid)
+        .collection("favorites")
+        .doc(widget.data.id)
+        .set(data);
   }
 }

@@ -1,5 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:wallyhub/pages/wallpaper_view_screen.dart';
+
+import '../config/config.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -9,17 +16,23 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  var images = [
-    'https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/7862485/pexels-photo-7862485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/9100862/pexels-photo-9100862.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/12672180/pexels-photo-12672180.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/12672185/pexels-photo-12672185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
-  ];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  User? user;
+
+  @override
+  void initState() {
+    _getUser();
+    super.initState();
+  }
+
+  void _getUser() async {
+    User u = await _auth.currentUser!;
+    setState(() {
+      user = u;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +56,65 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ),
               ),
             ),
-            StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-              itemCount: images.length,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              itemBuilder: (ctx, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image(
-                    image: NetworkImage(images[index]),
-                  ),
-                );
-              },
-            )
+            if (user != null) ...[
+              StreamBuilder(
+                stream: _db
+                    .collection("users")
+                    .doc(user?.uid)
+                    .collection("favorites")
+                    .orderBy("date", descending: true)
+                    .snapshots(),
+                builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return StaggeredGridView.countBuilder(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                      itemCount: snapshot.data?.docs.length,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      itemBuilder: (ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WallpaperViewPage(
+                                  data: snapshot.data!.docs[index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Hero(
+                            tag: snapshot.data?.docs[index].get("url"),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                placeholder: (ctx, url) => Image(
+                                  image: AssetImage("assets/placeholder.jpg"),
+                                ),
+                                imageUrl: snapshot.data?.docs[index].get("url"),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return Container(
+                    height: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: SpinKitChasingDots(
+                        color: primaryColor,
+                        size: 50,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ]
           ],
         ),
       ),
