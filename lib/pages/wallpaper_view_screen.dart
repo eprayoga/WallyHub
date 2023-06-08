@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:wallyhub/config/config.dart';
 
 class WallpaperViewPage extends StatefulWidget {
   const WallpaperViewPage({super.key, required this.data});
@@ -48,9 +50,9 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                 margin: EdgeInsets.only(top: 20),
                 child: Wrap(spacing: 10, children: [
                   ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.image),
-                    label: Text("Set as wallpaper"),
+                    onPressed: _launchURL,
+                    icon: Icon(Icons.download),
+                    label: Text("Download"),
                   ),
                   ElevatedButton.icon(
                     onPressed: () {},
@@ -69,5 +71,18 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
         ),
       ),
     );
+  }
+
+  void _launchURL() async {
+    try {
+      await launch(
+        widget.data["url"],
+        customTabsOption: CustomTabsOption(
+          toolbarColor: primaryColor,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+        ),
+      );
+    } catch (e) {}
   }
 }
