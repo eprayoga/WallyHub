@@ -1,16 +1,51 @@
 # wallyhub
 
-A new Flutter project.
+Photos Stock / Wallpaper App with Firebase and Machine Learning Kit <br/>
 
-## Getting Started
+This APP for Exam Project **Praktikum Pemrograman Mobile**
 
-This project is a starting point for a Flutter application.
+## 🚀 About Me
 
-A few resources to get you started if this is your first Flutter project:
+Nama : Endang Prayoga Hidayatulloh <br/>
+NIM : 2006189 <br/>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Teknik Informatika E ITG 2020**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+- Login With Google
+- Download Photos
+- Share Photos
+- Upload Photos and Auto Label with ML Kit
+- Delete Photos
+- Add to Favorites
+
+## Usage
+
+- Clone the project
+
+```bash
+  git clone https://github.com/eprayoga/WallyHub.git
+```
+
+- Create a new Firebase project from the [console](https://console.firebase.google.com/).
+
+- Configure the Firebase for each platform.
+
+- Go to the project directory
+
+```bash
+  cd WallyHub/
+```
+
+- Install dependencies
+
+```bash
+  flutter pub get
+```
+
+- Run the app using the command:
+
+```bash
+  flutter run
+```
