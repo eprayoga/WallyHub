@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.6.1
   firebase_core: ^2.13.0
+  firebase_dynamic_links: ^5.3.3
   firebase_messaging: ^14.6.2
   firebase_storage: ^11.2.1
   flutter:
@@ -26,6 +27,7 @@ dependencies:
   google_mlkit_image_labeling: ^0.6.0
   google_sign_in: ^6.1.1
   image_picker: ^0.8.7+5
+  share_plus: ^7.0.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

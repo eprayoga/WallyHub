@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:wallyhub/config/config.dart';
-import 'package:wallyhub/services/firebase_auth_service.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class WallpaperViewPage extends StatefulWidget {
   const WallpaperViewPage({super.key, required this.data});
@@ -60,7 +61,7 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                     label: Text("Download"),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: _createDynamicLink,
                     icon: Icon(Icons.share),
                     label: Text("Share"),
                   ),
@@ -107,5 +108,27 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
         .collection("favorites")
         .doc(widget.data.id)
         .set(data);
+  }
+
+  void _createDynamicLink() async {
+    DynamicLinkParameters dynamicLinkParameters = DynamicLinkParameters(
+      link: Uri.parse(widget.data["url"]),
+      uriPrefix: "https://wallyhub.page.link",
+      androidParameters: AndroidParameters(
+          packageName: 'com.example.wallyhub', minimumVersion: 0),
+      iosParameters:
+          IOSParameters(bundleId: 'com.example.wallyhub', minimumVersion: "0"),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: "WallyHub",
+        description: "An App for cools Photos",
+        imageUrl: Uri.parse(widget.data["url"]),
+      ),
+    );
+
+    final dynamicLink = await FirebaseDynamicLinks.instance
+        .buildShortLink(dynamicLinkParameters);
+
+    final url = dynamicLink.shortUrl.toString();
+    Share.share(url);
   }
 }
