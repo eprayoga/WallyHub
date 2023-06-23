@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wallyhub/pages/accountpage.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wallyhub/pages/favoritespage.dart';
+import 'package:wallyhub/pages/mywallpaperpage.dart';
 
 import 'explorepage.dart';
 
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   var _pages = [
     ExplorePage(),
     FavoritesPage(),
+    MyWallpaperPage(),
     AccountPage(),
   ];
 
@@ -27,25 +30,31 @@ class _HomePageState extends State<HomePage> {
         title: Text("WallyHub"),
       ),
       body: _pages[_selectedPageIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: "Explore",
+      bottomNavigationBar: GNav(
+        gap: 10,
+        tabBackgroundColor: Colors.grey.shade800,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        tabs: [
+          GButton(
+            icon: Icons.search,
+            text: "Explore",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: "Favorite",
+          GButton(
+            icon: Icons.favorite_border,
+            text: "Favorite",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: "Account",
+          GButton(
+            icon: Icons.image,
+            text: "My Wallpaper",
+          ),
+          GButton(
+            icon: Icons.person_outline,
+            text: "Account",
           ),
         ],
-        currentIndex: _selectedPageIndex,
-        onTap: (index) {
+        onTabChange: (value) {
           setState(() {
-            _selectedPageIndex = index;
+            _selectedPageIndex = value;
           });
         },
       ),

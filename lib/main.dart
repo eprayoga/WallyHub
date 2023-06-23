@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: primaryColor,
         fontFamily: "productsans",
-        // useMaterial3: true,
+        useMaterial3: true,
       ),
     );
   }
