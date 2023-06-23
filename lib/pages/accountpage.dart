@@ -1,11 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:wallyhub/pages/add_wallpaper_screen.dart';
-import 'package:wallyhub/pages/wallpaper_view_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../config/config.dart';
 
@@ -63,8 +59,9 @@ class _AccountPageState extends State<AccountPage> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       _auth.signOut();
+                      await GoogleSignIn().signOut();
                     },
                     child: Text("Logout"),
                   ),
