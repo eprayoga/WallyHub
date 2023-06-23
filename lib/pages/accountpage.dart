@@ -54,7 +54,13 @@ class _AccountPageState extends State<AccountPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("${_user.displayName}"),
+                  Text(
+                    "${_user.displayName}",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
