@@ -5,8 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:path/path.dart' as path;
+import 'package:wallyhub/config/config.dart';
 
 class AddWallpaperScreen extends StatefulWidget {
   const AddWallpaperScreen({super.key});
@@ -27,8 +29,12 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
 
   bool _isUploading = false;
   bool _isCompleteUploading = false;
+  bool _onSelectImage = false;
 
   void _loadImage() async {
+    setState(() {
+      _onSelectImage = true;
+    });
     final image = await ImagePicker()
         .pickImage(source: ImageSource.gallery, imageQuality: 30);
 
@@ -48,6 +54,7 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
         setState(() {
           _image = imageFile;
           detectedLabels = labels;
+          _onSelectImage = false;
         });
       }
     }
@@ -124,45 +131,61 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
-          child: Column(
+          child: Stack(
             children: [
-              InkWell(
-                onTap: _loadImage,
-                child: _image != null
-                    ? Image.file(_image!)
-                    : Image(
-                        image: AssetImage("assets/placeholder.jpg"),
-                      ),
+              Column(
+                children: [
+                  InkWell(
+                    onTap: _loadImage,
+                    child: _image != null
+                        ? Image.file(_image!)
+                        : Image(
+                            image: AssetImage("assets/placeholder.jpg"),
+                          ),
+                  ),
+                  _image != null
+                      ? Text("")
+                      : Text("Click on image to add photo"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  detectedLabels != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Wrap(
+                            spacing: 10,
+                            children: detectedLabels!.map((label) {
+                              return Chip(
+                                label: Text(label.label),
+                              );
+                            }).toList(),
+                          ),
+                        )
+                      : Container(),
+                  if (_isUploading) ...{Text("Uploading Photos...")},
+                  if (_isCompleteUploading) ...{Text("Upload Complete")},
+                  SizedBox(
+                    height: 40,
+                  ),
+                  ElevatedButton(
+                    onPressed: _uploadPhoto,
+                    child: Text('Upload Photo'),
+                  ),
+                ],
               ),
-              Text("Click on image to upload photo"),
-              SizedBox(
-                height: 20,
-              ),
-              detectedLabels != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Wrap(
-                        spacing: 10,
-                        children: detectedLabels!.map((label) {
-                          return Chip(
-                            label: Text(label.label),
-                          );
-                        }).toList(),
+              _onSelectImage || _isUploading
+                  ? Container(
+                      color: Colors.black54,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: SpinKitChasingDots(
+                          color: primaryColor,
+                          size: 80,
+                        ),
                       ),
                     )
                   : Container(),
-              SizedBox(
-                height: 40,
-              ),
-              if (_isUploading) ...{Text("Uploading Photos...")},
-              if (_isCompleteUploading) ...{Text("Upload Complete")},
-              SizedBox(
-                height: 40,
-              ),
-              ElevatedButton(
-                onPressed: _uploadPhoto,
-                child: Text('Upload Photo'),
-              ),
             ],
           ),
         ),

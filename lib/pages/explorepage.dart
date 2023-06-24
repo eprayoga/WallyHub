@@ -15,16 +15,6 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  // var images = [
-  //   'https://images.pexels.com/photos/2007647/pexels-photo-2007647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/7862485/pexels-photo-7862485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/9100862/pexels-photo-9100862.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/12672180/pexels-photo-12672180.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/12672185/pexels-photo-12672185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-  //   'https://images.pexels.com/photos/1274260/pexels-photo-1274260.jpeg?auto=compress&cs=tinysrgb&w=600',
-  // ];
-
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
