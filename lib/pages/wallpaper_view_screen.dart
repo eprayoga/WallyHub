@@ -8,9 +8,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class WallpaperViewPage extends StatefulWidget {
-  const WallpaperViewPage({super.key, required this.data});
+  const WallpaperViewPage({super.key, required this.data, this.fav});
 
   final DocumentSnapshot data;
+  final bool? fav;
 
   @override
   State<WallpaperViewPage> createState() => _WallpaperViewPageState();
@@ -20,60 +21,122 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    if (widget.fav != null) {
+      isFavorite = true;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<dynamic> tags = widget.data.get("tags").toList();
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Container(
-                child: Hero(
-                  tag: widget.data.get("url"),
-                  child: CachedNetworkImage(
-                    placeholder: (ctx, url) => Image(
-                      image: AssetImage("assets/placeholder.jpg"),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height - 80,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Stack(
+                        children: [
+                          Hero(
+                            tag: widget.data.get("url"),
+                            child: CachedNetworkImage(
+                              placeholder: (ctx, url) => Image(
+                                image: AssetImage("assets/placeholder.jpg"),
+                              ),
+                              imageUrl: widget.data.get("url"),
+                            ),
+                          ),
+                          Positioned(
+                            right: 10,
+                            top: 30,
+                            child: IconButton(
+                              onPressed: _addToFavorite,
+                              icon: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 35,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    imageUrl: widget.data.get("url"),
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Wrap(
+                        spacing: 10,
+                        children: tags.map((tag) {
+                          return Chip(
+                            label: Text(tag.toString()),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _launchURL,
+                        icon: Icon(Icons.download),
+                        label: Text("Download"),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: secondaryColor,
+                          shape: RoundedRectangleBorder(),
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                          ),
+                          minimumSize:
+                              Size(MediaQuery.of(context).size.width * 0.4, 60),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: _createDynamicLink,
+                        icon: Icon(Icons.share),
+                        label: Text("Share"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(),
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                          ),
+                          minimumSize:
+                              Size(MediaQuery.of(context).size.width * 0.4, 60),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Wrap(
-                  spacing: 10,
-                  children: tags.map((tag) {
-                    return Chip(
-                      label: Text(tag.toString()),
-                    );
-                  }).toList(),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Wrap(spacing: 10, children: [
-                  ElevatedButton.icon(
-                    onPressed: _launchURL,
-                    icon: Icon(Icons.download),
-                    label: Text("Download"),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: _createDynamicLink,
-                    icon: Icon(Icons.share),
-                    label: Text("Share"),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: _addToFavorite,
-                    icon: Icon(Icons.favorite_border),
-                    label: Text("Favorite"),
-                  ),
-                ]),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -108,6 +171,35 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
         .collection("favorites")
         .doc(widget.data.id)
         .set(data);
+
+    setState(() {
+      isFavorite = true;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: secondaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "successfully added to favourites",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
+      duration: Duration(seconds: 1),
+      backgroundColor: Colors.transparent,
+    ));
   }
 
   void _createDynamicLink() async {

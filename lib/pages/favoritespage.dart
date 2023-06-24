@@ -83,6 +83,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               MaterialPageRoute(
                                 builder: (context) => WallpaperViewPage(
                                   data: snapshot.data!.docs[index],
+                                  fav: true,
                                 ),
                               ),
                             );
