@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
                   headerAnimationLoop: true,
                   animType: AnimType.scale,
                   title: 'Info Aplikasi',
-                  // btnOkOnPress: () {},
                   desc:
                       'Aplikasi ini dibuat oleh Endang Prayoga Hidayatulloh dari Institut Teknologi Garut Prodi Teknik Informatika 2020, dengan NIM 2006189. Aplikasi ini ditujukan untuk memenuhi Tugas Akhir Mata Kuliah Pemrograman Mobile.',
                   showCloseIcon: true,

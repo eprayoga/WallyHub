@@ -54,10 +54,12 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
         setState(() {
           _image = imageFile;
           detectedLabels = labels;
-          _onSelectImage = false;
         });
       }
     }
+    setState(() {
+      _onSelectImage = false;
+    });
   }
 
   void _uploadPhoto() async {
@@ -128,66 +130,87 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
       appBar: AppBar(
         title: Text("Add Wallpaper"),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Column(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height - 90,
+              child: Stack(
                 children: [
-                  InkWell(
-                    onTap: _loadImage,
-                    child: _image != null
-                        ? Image.file(_image!)
-                        : Image(
-                            image: AssetImage("assets/placeholder.jpg"),
-                          ),
-                  ),
-                  _image != null
-                      ? Text("")
-                      : Text("Click on image to add photo"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  detectedLabels != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
-                            spacing: 10,
-                            children: detectedLabels!.map((label) {
-                              return Chip(
-                                label: Text(label.label),
-                              );
-                            }).toList(),
-                          ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: _loadImage,
+                          child: _image != null
+                              ? Image.file(_image!)
+                              : Image(
+                                  image: AssetImage("assets/placeholder.jpg"),
+                                ),
+                        ),
+                        _image != null
+                            ? Container()
+                            : Text("Click on image to add photo"),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        detectedLabels != null
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Wrap(
+                                  spacing: 10,
+                                  children: detectedLabels!.map((label) {
+                                    return Chip(
+                                      label: Text(label.label),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : Container(),
+                        if (_isUploading) ...{Text("Uploading Photos...")},
+                        if (_isCompleteUploading) ...{Text("Upload Complete")},
+                        SizedBox(
+                          height: 100,
                         )
-                      : Container(),
-                  if (_isUploading) ...{Text("Uploading Photos...")},
-                  if (_isCompleteUploading) ...{Text("Upload Complete")},
-                  SizedBox(
-                    height: 40,
+                      ],
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: _uploadPhoto,
-                    child: Text('Upload Photo'),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: ElevatedButton(
+                      onPressed: _uploadPhoto,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize:
+                            Size(MediaQuery.of(context).size.width, 60),
+                        shape: RoundedRectangleBorder(),
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: Text(
+                        'Upload Photo',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              _onSelectImage || _isUploading
-                  ? Container(
-                      color: Colors.black54,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                        child: SpinKitChasingDots(
-                          color: primaryColor,
-                          size: 80,
-                        ),
+            ),
+            _onSelectImage || _isUploading
+                ? Container(
+                    color: Colors.black54,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: SpinKitChasingDots(
+                        color: primaryColor,
+                        size: 80,
                       ),
-                    )
-                  : Container(),
-            ],
-          ),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

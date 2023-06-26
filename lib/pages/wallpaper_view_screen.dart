@@ -87,6 +87,48 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                         }).toList(),
                       ),
                     ),
+                    StreamBuilder(
+                      stream: _db
+                          .collection("users")
+                          .where("uid",
+                              isEqualTo: widget.data.get("uploaded_by"))
+                          .snapshots(),
+                      builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: FadeInImage(
+                                    width: 30,
+                                    height: 30,
+                                    image: NetworkImage(
+                                        snapshot.data!.docs[0].get("photoUrl")),
+                                    placeholder:
+                                        AssetImage("assets/placeholder.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  snapshot.data!.docs[0].get("displayName"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
                   ],
                 ),
               ),

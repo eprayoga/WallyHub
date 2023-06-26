@@ -48,7 +48,7 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("My Wallpaper"),
-                        IconButton(
+                        ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -57,8 +57,10 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                                   fullscreenDialog: true,
                                 ));
                           },
-                          icon: Icon(Icons.add),
-                        )
+                          child: Row(
+                            children: [Icon(Icons.add), Text("Tambah Foto")],
+                          ),
+                        ),
                       ],
                     ),
                   ),

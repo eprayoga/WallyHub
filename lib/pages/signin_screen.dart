@@ -18,7 +18,6 @@ class _SignInScreenState extends State<SignInScreen> {
     await FirebaseAuthService().signInWithGoogle();
 
     final user = FirebaseAuthService().user;
-    print('Nama : ${user.displayName}');
 
     _db.collection("users").doc(user.uid).set({
       "displayName": user.displayName,
