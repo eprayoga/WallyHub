@@ -103,8 +103,8 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: FadeInImage(
-                                    width: 30,
-                                    height: 30,
+                                    width: 35,
+                                    height: 35,
                                     image: NetworkImage(
                                         snapshot.data!.docs[0].get("photoUrl")),
                                     placeholder:
