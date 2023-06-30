@@ -56,29 +56,84 @@ class _ExplorePageState extends State<ExplorePage> {
                     crossAxisSpacing: 20,
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WallpaperViewPage(
-                                data: snapshot.data!.docs[index],
+                      return Stack(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WallpaperViewPage(
+                                    data: snapshot.data!.docs[index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Hero(
+                              tag: snapshot.data?.docs[index].get("url"),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  placeholder: (ctx, url) => Image(
+                                    image: AssetImage("assets/placeholder.jpg"),
+                                  ),
+                                  imageUrl:
+                                      snapshot.data?.docs[index].get("url"),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Hero(
-                          tag: snapshot.data?.docs[index].get("url"),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              placeholder: (ctx, url) => Image(
-                                image: AssetImage("assets/placeholder.jpg"),
-                              ),
-                              imageUrl: snapshot.data?.docs[index].get("url"),
                             ),
                           ),
-                        ),
+                          Positioned(
+                            bottom: 5,
+                            left: 5,
+                            child: StreamBuilder(
+                              stream: _db
+                                  .collection("users")
+                                  .where("uid",
+                                      isEqualTo: snapshot.data?.docs[index]
+                                          .get("uploaded_by"))
+                                  .snapshots(),
+                              builder:
+                                  (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: FadeInImage(
+                                          width: 20,
+                                          height: 20,
+                                          image: NetworkImage(snapshot
+                                              .data!.docs[0]
+                                              .get("photoUrl")),
+                                          placeholder: AssetImage(
+                                              "assets/placeholder.jpg"),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 7,
+                                      ),
+                                      Text(
+                                        snapshot.data!.docs[0]
+                                            .get("displayName"),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return Container();
+                              },
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

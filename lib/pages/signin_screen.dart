@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallyhub/config/config.dart';
 
 import '../services/firebase_auth_service.dart';
@@ -14,7 +15,12 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  bool inLogin = false;
+
   Future<void> _loginGoogle() async {
+    setState(() {
+      inLogin = true;
+    });
     await FirebaseAuthService().signInWithGoogle();
 
     final user = FirebaseAuthService().user;
@@ -26,6 +32,10 @@ class _SignInScreenState extends State<SignInScreen> {
       "photoUrl": user.photoURL,
       "lastSignIn": DateTime.now()
     }, SetOptions(merge: true));
+
+    setState(() {
+      inLogin = false;
+    });
   }
 
   @override
@@ -37,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Stack(
           children: [
             Image(
-              image: AssetImage("assets/bg.jpg"),
+              image: AssetImage("assets/bg2.jpg"),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.cover,
@@ -99,6 +109,19 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
             ),
+            inLogin
+                ? Container(
+                    color: Colors.black54,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: SpinKitChasingDots(
+                        color: primaryColor,
+                        size: 80,
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

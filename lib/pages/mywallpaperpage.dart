@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:wallyhub/pages/add_wallpaper_screen.dart';
 import 'package:wallyhub/pages/wallpaper_view_screen.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../config/config.dart';
 
@@ -112,38 +113,42 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (ctx) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(18),
-                                              ),
-                                              title: Text("Confirmation"),
-                                              content: Text(
-                                                  "Are you sure, you are deleting photos"),
-                                              actions: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text("Cancel"),
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    _db
-                                                        .collection("photos")
-                                                        .doc(snapshot.data
-                                                            ?.docs[index].id)
-                                                        .delete();
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: Text("Delete"),
-                                                ),
-                                              ],
-                                            );
-                                          });
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.warning,
+                                        headerAnimationLoop: true,
+                                        animType: AnimType.scale,
+                                        title: 'Confirmation',
+                                        reverseBtnOrder: true,
+                                        btnOkOnPress: () {
+                                          _db
+                                              .collection("photos")
+                                              .doc(
+                                                  snapshot.data?.docs[index].id)
+                                              .delete();
+
+                                          AwesomeDialog(
+                                            context: context,
+                                            animType: AnimType.scale,
+                                            headerAnimationLoop: false,
+                                            dialogType: DialogType.success,
+                                            showCloseIcon: true,
+                                            title: 'Succes',
+                                            desc: 'successful delete photo',
+                                            btnOkOnPress: () {
+                                              debugPrint('OnClcik');
+                                            },
+                                            btnOkIcon: Icons.check_circle,
+                                            onDismissCallback: (type) {
+                                              debugPrint(
+                                                  'Dialog Dissmiss from callback $type');
+                                            },
+                                          ).show();
+                                        },
+                                        btnCancelOnPress: () {},
+                                        desc:
+                                            'Are you sure, you are deleting photo?',
+                                      ).show();
                                     },
                                     icon: Icon(
                                       Icons.delete,

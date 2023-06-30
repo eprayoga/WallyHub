@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallyhub/config/config.dart';
 import 'package:wallyhub/pages/accountpage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wallyhub/pages/favoritespage.dart';
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> {
         gap: 10,
         tabBackgroundColor: Colors.grey.shade800,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        activeColor: secondaryColor,
         tabs: [
           GButton(
             icon: Icons.search,

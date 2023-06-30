@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../config/config.dart';
 
@@ -65,9 +66,21 @@ class _AccountPageState extends State<AccountPage> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      _auth.signOut();
-                      await GoogleSignIn().signOut();
+                    onPressed: () {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.warning,
+                        headerAnimationLoop: true,
+                        animType: AnimType.bottomSlide,
+                        title: 'Log Out',
+                        reverseBtnOrder: true,
+                        btnOkOnPress: () async {
+                          _auth.signOut();
+                          await GoogleSignIn().signOut();
+                        },
+                        btnCancelOnPress: () {},
+                        desc: 'are you sure to logout?',
+                      ).show();
                     },
                     child: Text("Logout"),
                   ),
