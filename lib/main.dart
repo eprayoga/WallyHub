@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wallyhub/pages/homepage.dart';
 import 'package:wallyhub/pages/signin_screen.dart';
+import 'package:wallyhub/pages/splash_screen.dart';
 import 'config/config.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(App());
 }
 
@@ -19,7 +21,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: SplashScreen(),
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: primaryColor,
