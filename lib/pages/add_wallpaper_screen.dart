@@ -120,13 +120,13 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tambah Foto"),
+        title: const Text("Tambah Foto"),
       ),
-      body: Container(
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height - 90,
               child: Stack(
                 children: [
@@ -137,14 +137,14 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
                           onTap: _loadImage,
                           child: _image != null
                               ? Image.file(_image!)
-                              : Image(
+                              : const Image(
                                   image: AssetImage("assets/placeholder.jpg"),
                                 ),
                         ),
                         _image != null
                             ? Container()
-                            : Text("Klik gambar untuk memilih foto"),
-                        SizedBox(
+                            : const Text("Klik gambar untuk memilih foto"),
+                        const SizedBox(
                           height: 10,
                         ),
                         detectedLabels != null
@@ -160,9 +160,13 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
                                 ),
                               )
                             : Container(),
-                        if (_isUploading) ...{Text("Uploading Photos...")},
-                        if (_isCompleteUploading) ...{Text("Upload Complete")},
-                        SizedBox(
+                        if (_isUploading) ...{
+                          const Text("Uploading Photos...")
+                        },
+                        if (_isCompleteUploading) ...{
+                          const Text("Upload Complete")
+                        },
+                        const SizedBox(
                           height: 100,
                         )
                       ],
@@ -176,11 +180,11 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
                       style: ElevatedButton.styleFrom(
                         minimumSize:
                             Size(MediaQuery.of(context).size.width, 60),
-                        shape: RoundedRectangleBorder(),
+                        shape: const RoundedRectangleBorder(),
                         backgroundColor: primaryColor,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text(
+                      child: const Text(
                         'Upload Photo',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),

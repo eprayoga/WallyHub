@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
-  FirebaseAuth? _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  User get user => _auth!.currentUser!;
+  User get user => _auth.currentUser!;
 
-  Stream<User?> get authState => _auth!.authStateChanges();
+  Stream<User?> get authState => _auth.authStateChanges();
 
   Future<void> signInWithGoogle() async {
     try {
@@ -20,7 +20,7 @@ class FirebaseAuthService {
           idToken: googleAuth?.idToken,
         );
 
-        await _auth!.signInWithCredential(credential);
+        await _auth.signInWithCredential(credential);
       }
     } on FirebaseAuthException catch (e) {
       print(e.stackTrace.toString());
@@ -28,6 +28,6 @@ class FirebaseAuthService {
   }
 
   Future<void> signOut() async {
-    _auth!.signOut();
+    _auth.signOut();
   }
 }

@@ -23,13 +23,13 @@ class _ExplorePageState extends State<ExplorePage> {
       child: Container(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
               alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 3, left: 20, bottom: 20),
-              child: Text(
+              margin: const EdgeInsets.only(top: 3, left: 20, bottom: 20),
+              child: const Text(
                 "Jelajahi",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -49,12 +49,13 @@ class _ExplorePageState extends State<ExplorePage> {
                   return StaggeredGridView.countBuilder(
                     crossAxisCount: 2,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                    physics: const NeverScrollableScrollPhysics(),
+                    staggeredTileBuilder: (int index) =>
+                        const StaggeredTile.fit(1),
                     itemCount: snapshot.data?.docs.length,
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20,
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     itemBuilder: (ctx, index) {
                       return Stack(
                         children: [
@@ -74,7 +75,7 @@ class _ExplorePageState extends State<ExplorePage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  placeholder: (ctx, url) => Image(
+                                  placeholder: (ctx, url) => const Image(
                                     image: AssetImage("assets/placeholder.jpg"),
                                   ),
                                   imageUrl:
@@ -108,12 +109,12 @@ class _ExplorePageState extends State<ExplorePage> {
                                           image: NetworkImage(snapshot
                                               .data!.docs[0]
                                               .get("photoUrl")),
-                                          placeholder: AssetImage(
+                                          placeholder: const AssetImage(
                                               "assets/placeholder.jpg"),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 7,
                                       ),
                                       Text(
@@ -121,7 +122,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                             .get("displayName"),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                         ),
@@ -138,7 +139,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     },
                   );
                 }
-                return Container(
+                return SizedBox(
                   height: MediaQuery.of(context).size.width,
                   child: Center(
                     child: SpinKitChasingDots(
@@ -149,7 +150,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 );
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
           ],

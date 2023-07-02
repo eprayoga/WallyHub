@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,7 +14,6 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   late User _user;
 
   @override
@@ -34,12 +32,12 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: _user != null
             ? Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ClipRRect(
@@ -48,28 +46,28 @@ class _AccountPageState extends State<AccountPage> {
                       width: 200,
                       height: 200,
                       image: NetworkImage(_user.photoURL!),
-                      placeholder: AssetImage("assets/placeholder.jpg"),
+                      placeholder: const AssetImage("assets/placeholder.jpg"),
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
                     "${_user.displayName}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(),
+                      shape: const RoundedRectangleBorder(),
                     ),
                     onPressed: () {
                       AwesomeDialog(
@@ -87,11 +85,11 @@ class _AccountPageState extends State<AccountPage> {
                         desc: 'Apakah kamu yakin akan melakukan logout?',
                       ).show();
                     },
-                    child: Text("Logout"),
+                    child: const Text("Logout"),
                   ),
                 ],
               )
-            : LinearProgressIndicator(),
+            : const LinearProgressIndicator(),
       ),
     );
   }

@@ -41,21 +41,21 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
             Image(
-              image: AssetImage("assets/bg2.jpg"),
+              image: const AssetImage("assets/bg2.jpg"),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.cover,
             ),
             Container(
-              margin: EdgeInsets.only(top: 100),
+              margin: const EdgeInsets.only(top: 100),
               width: MediaQuery.of(context).size.width,
-              child: Image(
+              child: const Image(
                 image: AssetImage("assets/logo_circle.png"),
                 width: 200,
                 height: 200,
@@ -64,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
                     Color(0xFF000000),
@@ -81,12 +81,14 @@ class _SignInScreenState extends State<SignInScreen> {
               right: 0,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: InkWell(
                   onTap: _loginGoogle,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -98,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Google Sign in",
                       textAlign: TextAlign.center,
                       style: TextStyle(

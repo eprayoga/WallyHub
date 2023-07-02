@@ -18,18 +18,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedPageIndex = 0;
 
-  var _pages = [
-    ExplorePage(),
-    FavoritesPage(),
-    MyWallpaperPage(),
-    AccountPage(),
+  final _pages = [
+    const ExplorePage(),
+    const FavoritesPage(),
+    const MyWallpaperPage(),
+    const AccountPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("WallyHub"),
+        title: const Text("WallyHub"),
         actions: [
           IconButton(
               onPressed: () {
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                   showCloseIcon: true,
                 ).show();
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.info,
               ))
         ],
@@ -53,9 +53,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: GNav(
         gap: 10,
         tabBackgroundColor: Colors.grey.shade800,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         activeColor: secondaryColor,
-        tabs: [
+        tabs: const [
           GButton(
             icon: Icons.search,
             text: "Jelajahi",

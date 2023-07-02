@@ -38,7 +38,7 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: _user != null
             ? Column(
@@ -49,7 +49,7 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Wallpaper Saya",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -63,11 +63,12 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddWallpaperScreen(),
+                                  builder: (context) =>
+                                      const AddWallpaperScreen(),
                                   fullscreenDialog: true,
                                 ));
                           },
-                          child: Row(
+                          child: const Row(
                             children: [Icon(Icons.add), Text("Tambah Foto")],
                           ),
                         ),
@@ -86,13 +87,13 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                           return StaggeredGridView.countBuilder(
                             crossAxisCount: 2,
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             staggeredTileBuilder: (int index) =>
-                                StaggeredTile.fit(1),
+                                const StaggeredTile.fit(1),
                             itemCount: snapshot.data?.docs.length,
                             mainAxisSpacing: 20,
                             crossAxisSpacing: 20,
-                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             itemBuilder: (ctx, index) {
                               return InkWell(
                                 onTap: () {
@@ -113,7 +114,8 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: CachedNetworkImage(
-                                          placeholder: (ctx, url) => Image(
+                                          placeholder: (ctx, url) =>
+                                              const Image(
                                             image: AssetImage(
                                                 "assets/placeholder.jpg"),
                                           ),
@@ -161,7 +163,7 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                                               'Are you sure, you are deleting photo?',
                                         ).show();
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.delete,
                                         color: Colors.red,
                                       ),
@@ -172,7 +174,7 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                             },
                           );
                         } else {
-                          return Container(
+                          return SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height - 280,
                             child: Column(
@@ -180,37 +182,37 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image(
-                                  image: AssetImage("assets/no_data.png"),
+                                  image: const AssetImage("assets/no_data.png"),
                                   width:
                                       MediaQuery.of(context).size.width * 0.6,
                                   fit: BoxFit.cover,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
-                                Text(
+                                const Text(
                                   "Kamu tidak memiliki Foto,\nayo upload Foto terbaik kamu!",
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: primaryColor,
                                       foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(),
+                                      shape: const RoundedRectangleBorder(),
                                     ),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                AddWallpaperScreen(),
+                                                const AddWallpaperScreen(),
                                             fullscreenDialog: true,
                                           ));
                                     },
-                                    child: Text("Tambah Foto"))
+                                    child: const Text("Tambah Foto"))
                               ],
                             ),
                           );
@@ -222,12 +224,12 @@ class _MyWallpaperPageState extends State<MyWallpaperPage> {
                       );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 80,
                   ),
                 ],
               )
-            : LinearProgressIndicator(),
+            : const LinearProgressIndicator(),
       ),
     );
   }
