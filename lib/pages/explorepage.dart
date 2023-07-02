@@ -30,7 +30,7 @@ class _ExplorePageState extends State<ExplorePage> {
               alignment: Alignment.topLeft,
               margin: EdgeInsets.only(top: 3, left: 20, bottom: 20),
               child: Text(
-                "Explore",
+                "Jelajahi",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 40,

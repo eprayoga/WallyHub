@@ -161,7 +161,7 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
                       ElevatedButton.icon(
                         onPressed: _createDynamicLink,
                         icon: Icon(Icons.share),
-                        label: Text("Share"),
+                        label: Text("Bagikan"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,

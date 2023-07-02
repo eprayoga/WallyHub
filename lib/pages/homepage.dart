@@ -58,19 +58,19 @@ class _HomePageState extends State<HomePage> {
         tabs: [
           GButton(
             icon: Icons.search,
-            text: "Explore",
+            text: "Jelajahi",
           ),
           GButton(
             icon: Icons.favorite_border,
-            text: "Favorite",
+            text: "Favorit",
           ),
           GButton(
             icon: Icons.image,
-            text: "My Wallpaper",
+            text: "Wallpaper Saya",
           ),
           GButton(
             icon: Icons.person_outline,
-            text: "Account",
+            text: "Akun",
           ),
         ],
         onTabChange: (value) {

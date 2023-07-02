@@ -66,6 +66,11 @@ class _AccountPageState extends State<AccountPage> {
                     height: 20,
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(),
+                    ),
                     onPressed: () {
                       AwesomeDialog(
                         context: context,
@@ -79,7 +84,7 @@ class _AccountPageState extends State<AccountPage> {
                           await GoogleSignIn().signOut();
                         },
                         btnCancelOnPress: () {},
-                        desc: 'are you sure to logout?',
+                        desc: 'Apakah kamu yakin akan melakukan logout?',
                       ).show();
                     },
                     child: Text("Logout"),

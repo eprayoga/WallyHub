@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -101,26 +102,17 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
         }
       });
     } else {
-      showDialog(
+      AwesomeDialog(
         context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-            title: Text("Error"),
-            content: Text("Select image to upload..."),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        headerAnimationLoop: false,
+        title: 'Error',
+        desc: 'Pilih Foto terlebih dahulu!',
+        btnOkOnPress: () {},
+        btnOkIcon: Icons.cancel,
+        btnOkColor: Colors.red,
+      ).show();
     }
   }
 
@@ -128,7 +120,7 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Wallpaper"),
+        title: Text("Tambah Foto"),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -151,7 +143,7 @@ class _AddWallpaperScreenState extends State<AddWallpaperScreen> {
                         ),
                         _image != null
                             ? Container()
-                            : Text("Click on image to add photo"),
+                            : Text("Klik gambar untuk memilih foto"),
                         SizedBox(
                           height: 10,
                         ),

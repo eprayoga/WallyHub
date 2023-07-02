@@ -23,6 +23,10 @@ class _SignInScreenState extends State<SignInScreen> {
     });
     await FirebaseAuthService().signInWithGoogle();
 
+    setState(() {
+      inLogin = false;
+    });
+
     final user = FirebaseAuthService().user;
 
     _db.collection("users").doc(user.uid).set({
@@ -32,10 +36,6 @@ class _SignInScreenState extends State<SignInScreen> {
       "photoUrl": user.photoURL,
       "lastSignIn": DateTime.now()
     }, SetOptions(merge: true));
-
-    setState(() {
-      inLogin = false;
-    });
   }
 
   @override
