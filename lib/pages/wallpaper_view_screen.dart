@@ -214,34 +214,36 @@ class _WallpaperViewPageState extends State<WallpaperViewPage> {
         .doc(widget.data.id)
         .set(data);
 
+    if (!isFavorite) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: secondaryColor,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Berhasil ditambahkan ke Favorit",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.transparent,
+      ));
+    }
+
     setState(() {
       isFavorite = true;
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: secondaryColor,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "successfully added to favourites",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ],
-        ),
-      ),
-      duration: Duration(seconds: 1),
-      backgroundColor: Colors.transparent,
-    ));
   }
 
   void _createDynamicLink() async {
