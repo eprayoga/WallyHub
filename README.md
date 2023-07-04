@@ -11,6 +11,10 @@ NIM : 2006189 <br/>
 
 **Teknik Informatika E ITG 2020**
 
+## Demo APP
+
+[Download APK](https://drive.google.com/drive/folders/1XenehziXE7jrIIxYQdJ144152xAlvUxY?usp=sharing).
+
 ## Features
 
 - Login With Google

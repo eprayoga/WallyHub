@@ -13,15 +13,17 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: primaryColor,
@@ -50,12 +52,12 @@ class _MainPageState extends State<MainPage> {
         if (snapshot.hasData) {
           User user = snapshot.data;
           if (user != null) {
-            return HomePage();
+            return const HomePage();
           } else {
-            return SignInScreen();
+            return const SignInScreen();
           }
         } else {
-          return SignInScreen();
+          return const SignInScreen();
         }
       },
     );
