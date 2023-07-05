@@ -4,16 +4,16 @@ Photos Stock / Wallpaper App with Firebase and Machine Learning Kit <br/>
 
 This APP for Exam Project **Praktikum Pemrograman Mobile**
 
+## Demo APP
+
+[Download APK](https://drive.google.com/drive/folders/1XenehziXE7jrIIxYQdJ144152xAlvUxY?usp=sharing)
+
 ## 🚀 About Me
 
 Nama : Endang Prayoga Hidayatulloh <br/>
 NIM : 2006189 <br/>
 
 **Teknik Informatika E ITG 2020**
-
-## Demo APP
-
-[Download APK](https://drive.google.com/drive/folders/1XenehziXE7jrIIxYQdJ144152xAlvUxY?usp=sharing).
 
 ## Features
 
@@ -23,6 +23,7 @@ NIM : 2006189 <br/>
 - Upload Photos and Auto Label with ML Kit
 - Delete Photos
 - Add to Favorites
+- Firebase Messaging (Notification)
 
 ## Usage
 
